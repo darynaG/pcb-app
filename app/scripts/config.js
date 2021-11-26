@@ -1,3 +1,3 @@
 az.hold_value.config = {
-    api_url : "https://dashainn.pythonanywhere.com/"
+    api_url : "https://pcb-defects-app.herokuapp.com/"
 }
