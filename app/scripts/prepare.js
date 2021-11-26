@@ -1,22 +1,24 @@
+BackgroundColor = "#422040"
+SectionColor = "#713E5A"
+AccentColor = "#E3D985"
+MainButtonColor = "#E57A44"
+AdditionalButtonColor = "#D6DBB2"
+LighterColor = "#BCD8C1"
+ContainerColor = "#70798C"
+ButtonsBackground = "#33d9b2"
+
 az.load_font("Staatliches")
 az.style_body({
-    "background": "rgb(28, 80, 121",
+    "background": BackgroundColor,
     "font-family": "Staatliches"
 })
-az.add_top_button({
-    "this_class": "to_top_button",
-    "text": "TOP",
-    "side": "right"
-})
-az.style_button("to_top_button", 1, {
-    "background": "rgb(233, 130, 94)"
-})
+
 az.add_sections({
     "this_class": "my_sections",
     "sections": 2
 })
 az.all_style_sections('my_sections', {
-    "background": "#222f3e",
+    "background": SectionColor,
     "height": "auto",
     "max-width": "1100px",
     "min-width": "1100px"
@@ -48,7 +50,7 @@ az.call_once_satisfied({
         az.style_word("image_count", 1, {
             "this_class": "color_word",
             "word": az.hold_value.extracted_defects_images.length,
-            "color": "rgb(233, 130, 94)"
+            "color": AccentColor
         })
     }
 })
@@ -108,7 +110,7 @@ az.style_scrollable_container("container", 1, {
     "align": "center",
     "width": "90%",
     "height": "300px",
-    "background": "#5e6e88",
+    "background": ContainerColor,
     "border-radius": "6px",
     "border": "1px solid gold"
 })
@@ -118,7 +120,7 @@ az.add_button("banner_layout_cells", 1, {
 })
 az.add_button("banner_layout_cells", 1, {
     "this_class": "option_butts",
-    "text": "RUN PIPELINE"
+    "text": "RUN"
 })
 az.style_button("option_butts", 1, {
     "background": "gold",
@@ -134,7 +136,7 @@ az.style_button("option_butts", 2, {
     "pointer-events" : "none"
 })
 az.style_button("option_butts", 3, {
-    "background": "#33d9b2"
+    "background": ButtonsBackground
 })
 az.add_event("option_butts", 1, {
     "type": "click",
@@ -177,38 +179,38 @@ az.style_layout("loading_layout", 1, {
     "position": "absolute",
     "border": 0
 })
-az.add_icon("banner_layout_cells", 3, {
-    "this_class": "settings_icon",
-    "icon_class": "fa-cog"
-})
-az.style_icon("settings_icon", 1, {
-    "color": "white",
-    "float": "right",
-    "font-size": "30px",
-    "cursor": "pointer"
-})
-az.add_event("settings_icon", 1, {
-    "type": "click",
-    "function": function() {
-        pop_settings()
-    }
-})
+// az.add_icon("banner_layout_cells", 3, {
+//     "this_class": "settings_icon",
+//     "icon_class": "fa-cog"
+// })
+// az.style_icon("settings_icon", 1, {
+//     "color": "white",
+//     "float": "right",
+//     "font-size": "30px",
+//     "cursor": "pointer"
+// })
+// az.add_event("settings_icon", 1, {
+//     "type": "click",
+//     "function": function() {
+//         pop_settings()
+//     }
+// })
 az.add_layout("my_sections", 2, {
     "this_class": "tally_layout",
     "row_class": "tally_layout_rows",
     "cell_class": "tally_layout_cells",
-    "number_of_rows": 3,
+    "number_of_rows": 6,
     "number_of_columns": 3
 })
 az.style_layout("tally_layout", 1, {
     "width": "100%",
-    "height": "150px",
+    "height": "fit",
     "align": "center",
     "margin-top": "10px",
     "column_widths": ['10%', '80%', '10%'],
     "border": 1
 })
-az.hold_value.defects = ['SPUR', 'SPURIOUS', 'SHORT']
+az.hold_value.defects = ['SPUR', 'SPURIOUS', 'SHORT', 'OPEN', 'MOUSEBITE', 'PIN-HOLE'];
 az.call_multiple({
     "iterations": az.hold_value.defects.length,
     "function": function(elem, index) {

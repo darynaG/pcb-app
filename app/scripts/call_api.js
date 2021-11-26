@@ -4,7 +4,7 @@ function difference_images() {
     image_path_1 = $('.show_img').eq(1).attr('src').replace('../', '')
     az.hold_value.current_run_id = az.makeid()
     params = {
-        "function": "image_differencing",
+        "function": "difference_images",
         "image_path_1": image_path_1,
         "image_path_2": image_path_2,
         "id": az.hold_value.current_run_id
@@ -12,9 +12,8 @@ function difference_images() {
     az.call_api({
         "url": az.hold_value.config.api_url,
         "parameters": params,
-      
         "done": function() {
-            get_defects() // once images have been differenced extract defects using contours
+            get_defects()
         },
         "fail": function(err) {
             console.log(err)
@@ -23,16 +22,34 @@ function difference_images() {
 
     function get_defects() {
         params = {
-            "function": "extract_defects_using_contours",
+            "function": "extract_pcb_defects_with_contours",
             "path_to_diff": "diff_img/diff_" + az.hold_value.current_run_id + ".png",
             "id": az.hold_value.current_run_id
         }
         az.call_api({
             "url": az.hold_value.config.api_url,
             "parameters": params,
-           
             "done": function(data) {
-                show_copped_labelled(az.hold_value.current_run_id) // once defects have been extracted display in app, then run predictions...
+                show_copped_labelled(az.hold_value.current_run_id)
+                get_dark_defects()
+            },
+            "fail": function(err) {
+                console.log(err)
+            }
+        })
+    }
+
+    function get_dark_defects() {
+        params = {
+            "function": "extract_dark_pcb_defects_with_contours",
+            "path_to_diff": "diff_img/diff_dark_" + az.hold_value.current_run_id + ".png",
+            "id": az.hold_value.current_run_id
+        }
+        az.call_api({
+            "url": az.hold_value.config.api_url,
+            "parameters": params,
+            "done": function(data) {
+                show_copped_labelled(az.hold_value.current_run_id)
                 setTimeout(function() {
                     predict_defects()
                 }, 2000)
@@ -62,9 +79,8 @@ function predict_defects() {
                     az.call_api({
                         "url": az.hold_value.config.api_url,
                         "parameters": params,
-                        
                         "done": function(data) {
-                            type = az.get_everything_between(data, 'Category', ', tensor')
+                            type = data,
                             az.add_text("crops_layout_cells", (pred_cnt * 2) + 2, {
                                 "this_class": "show_predict_text",
                                 "text": type
@@ -90,13 +106,12 @@ function predict_defects() {
     })
 }
 
-function remove_diff_img() {
+function remove_diff_images() {
     params = {
-        "function": "remove_diff_img"
+        "function": "remove_diff_images"
     }
     az.call_api({
         "url": az.hold_value.config.api_url,
-        
         "parameters": params,
         "done": function(data) {},
         "fail": function(err) {}
